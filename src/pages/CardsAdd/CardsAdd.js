@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import { InputLabel, TextField } from '@material-ui/core';
+import { FormHelperText, InputLabel, TextField } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -9,11 +9,12 @@ import Button from '@material-ui/core/Button';
 import { Card as ShowCard } from '../../components/card/cardDesign'
 import Layout from '../../components/layout/layout';
 import CardBrands from '../../components/cardBrands/cardBrands';
-import { formatString, checkIsCardNumber, hasNumber, stringContainsDigits, normalizeCardNumber, normalizeExpiryDate, ccExpiresFormat, checkIfNumbersInString, normalizeFullName, validateCreditCardNumber, detectWhatIsBrandCard, defineLengthOfCardNumber } from '../../lib/utils'
+import { formatString, checkIsCardNumber, hasNumber, stringContainsDigits, normalizeCardNumber, normalizeExpiryDate, ccExpiresFormat, checkIfNumbersInString, normalizeFullName, validateCreditCardNumber, detectWhatIsBrandCard, defineLengthOfCardNumber, lastDayOfMonth } from '../../lib/utils'
 import './CardsAdd.css'
 
 import partOfCard from '../../assets/images/partOfCard.png'
 import visa from '../../assets/images/visa.svg'
+import CardForm from '../../components/cardForm/cardForm';
 
 const useStyles = makeStyles({
   // root: {
@@ -112,7 +113,7 @@ const CardsAdd = () => {
   }
 
   const onPasteHandler = (key, e) => {
-    if (key.includes('cardNumber')) {
+    if (key.includes('cardNumber') || key.includes('expiryDate')) {
       e.preventDefault()
     }
   }
@@ -129,8 +130,51 @@ const CardsAdd = () => {
     }
     
     return cssClass
-  } 
+  }
 
+  const isValidExpirayDate = (val, type) => {
+    let cssClass = ''
+    let isValid = null
+
+    const d = new Date()
+    const currDate = d.getDate();
+    const currMonth = d.getMonth() + 1;
+    const currYear = +d.getFullYear().toString().split('0')[1];
+    const valSplited = val?.split('/')
+    const enteredMonth = isNaN(+valSplited?.[0]) ? 0 : +valSplited?.[0]
+    const enteredYear = isNaN(+valSplited?.[1]) ? 0 : +valSplited?.[1]
+    const lastDay = lastDayOfMonth(d.getFullYear(), enteredMonth)
+    console.log('LAST day', lastDay, enteredMonth)
+    // const isTheSameMonthAndYear = enteredMonth === currMonth && enteredYear === currYear && lastDay > currDate
+    const isExpiredDate = (enteredMonth < currMonth && enteredYear < currYear) || (enteredMonth > currMonth && enteredYear < currYear) || (enteredMonth === currMonth && enteredYear < currYear) || (enteredMonth < currMonth && enteredYear === currYear) || (enteredMonth === currMonth && enteredYear === currYear && lastDay <= currDate)
+
+    if (!val.length) {
+      cssClass = 'currentColor'
+      isValid = false
+    } else if (val.length) {
+      console.log('EXP DATE', enteredMonth, currMonth, enteredYear, currYear, enteredMonth < currMonth && enteredYear < currYear )
+      if (isExpiredDate) {
+        cssClass = 'errorColor'
+        isValid = false
+      } else {
+        cssClass = 'currentColor'
+        isValid = true
+      }
+    }
+
+    if (type === 'class') {
+      return cssClass
+    }
+
+    console.log('exp date is valid', isValid)
+    
+    return isValid
+  }
+
+  const isValidCcNum = styleCNInput(data, form.cardNumber) !== 'errorColor'
+  const buttonIsDisabled = form.fullName.length > 0 && isValidCcNum && (isValidExpirayDate(form.expiryDate, 'isValid') && form.expiryDate.length > 4)
+
+  console.log('INFOO: ', isValidCcNum, buttonIsDisabled)
   return (
     <Layout className="cards-add-page">
       <h2 className="title-of-page">Cards Add</h2>
@@ -145,44 +189,23 @@ const CardsAdd = () => {
             expiryDate={form.expiryDate}
             fullName={form.fullName}
           />
-          <form noValidate autoComplete="off">
-            <InputLabel>Full name</InputLabel>
-            <TextField 
-              id="standard-basic" 
-              defaultValue={form.fullName}
-              placeholder="John Smith"
-              onFocus={() => setFocus('fullName')} 
-              onChange={(e) => handleChange('fullName', e)}
-              onBeforeInput={(e) => handleOnBeforeInput('fullName', e)}
-            />
-            <InputLabel>Card number</InputLabel>
-            <TextField 
-              className={`cc-num-input cc-num-input-${styleCNInput(data, form.cardNumber)}`}
-              type="tel" 
-              id="standard-basic"
-              defaultValue={form.cardNumber}
-              placeholder="8888 8888 8888 8888"
-              onPaste={(e) => onPasteHandler('cardNumber', e)}
-              onFocus={() => setFocus('cardNumber')} 
-              onChange={(e) => handleChange('cardNumber', e)}
-              onBeforeInput={(e) => handleOnBeforeInput('cardNumber', e)}
-            />
-            <InputLabel>Expiry date</InputLabel>
-            <TextField
-              id="date"
-              type="text"
-              inputMode="numeric"
-              defaultValue={form.expiryDate}
-              placeholder="MM/YY"
-              onFocus={() => setFocus('expiryDate')} 
-              onChange={(e) => handleChange('expiryDate', e)}
-              onBeforeInput={(e) => handleOnBeforeInput('expiryDate', e)}
-            />
-          </form>
+          <CardForm
+            defaultValueFullName={form.fullName}
+            defaultValueCardNum={form.cardNumber}
+            defaultValueExpityDate={form.expiryDate}
+            setFocus={(inputName) => setFocus(inputName)}
+            handleChange={(key, e) => handleChange(key, e)}
+            handleOnBeforeInput={(key, e) => handleOnBeforeInput(key, e)}
+            onPasteHandler={(key, e) => onPasteHandler(key, e)}
+            lsCardBrand={lsCardBrand}
+            cardNumberLen={form.cardNumber.length}
+            ccNumClass={styleCNInput(data, form.cardNumber)}
+            isValidExpirayDate={isValidExpirayDate(form.expiryDate, 'class')}
+          />
         </CardContent>
         <CardActions className="card-wrapper-footer">
           <CardBrands />
-          <Button color="primary" variant="contained" size="large">Add Card</Button>
+          <Button disabled={!buttonIsDisabled && true} color="primary" variant="contained" size="large">Add Card</Button>
         </CardActions>
       </Card>
     </Layout>

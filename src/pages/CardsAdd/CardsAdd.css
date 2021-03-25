@@ -7,40 +7,19 @@
   width: 80%;
 }
 
-.card + form {
-  width: 100%;
-  display: grid;
-  row-gap: .6rem;
-  padding: 1.5rem;
-}
-
-.card + form > label {
-  color: var(--purple);
-  font-weight: bold;
-  text-align: left;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-}
-
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-.cc-num-input.cc-num-input-currentColor .MuiInputBase-root {
-  color: currentColor;
-}
-
-.cc-num-input.cc-num-input-errorColor .MuiInputBase-root {
-  color: red;
+.card-wrapper-header h4 {
+  padding: 1rem;
 }
 
 .card-wrapper-footer.MuiCardActions-root {
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
   background: #eee;
-  padding: 2rem 0;
+  padding: 2rem;
+}
+
+.card-wrapper-footer.MuiCardActions-root .MuiButton-containedPrimary {
+  justify-self: flex-end;
 }
 
 @media (max-width: 767px) {
@@ -79,4 +58,7 @@ input[type=number] {
     align-self: flex-start;
   }
 
+  .card-wrapper-footer.MuiCardActions-root .MuiButton-containedPrimary {
+    justify-self: center;
+  }
 }

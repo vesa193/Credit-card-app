@@ -155,3 +155,8 @@ export function defineLengthOfCardNumber(data, val) {
       break;
   }
 }
+
+
+export function lastDayOfMonth(y,m) {
+  return  new Date(y, m, 0).getDate();
+}

@@ -1,0 +1,36 @@
+.card + form {
+  width: 100%;
+  display: grid;
+  row-gap: .6rem;
+  padding: 1.5rem;
+}
+
+.card + form > label {
+  color: var(--purple);
+  font-weight: bold;
+  text-align: left;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+:is(.cc-num-input.cc-num-input--currentColor, .cc-exp-date-input--currentColor) .MuiInputBase-root {
+  color: currentColor;
+}
+
+:is(.cc-num-input.cc-num-input--errorColor, .cc-exp-date-input--errorColor) .MuiInputBase-root {
+  color: red;
+}
+
+@media (max-width: 767px) {
+  .card + form {
+    width: 85%;
+    row-gap: 2rem;
+  }
+}

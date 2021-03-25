@@ -6,6 +6,7 @@
   grid-auto-flow: column;
   grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
   grid-gap: 10px;
+  justify-self: flex-start;
 }
 
 .credit-card-brands img {
@@ -15,6 +16,7 @@
 @media (max-width: 767px) {
   .credit-card-brands {
     width: 80%;
+    justify-self: center;
     margin-bottom: 2rem;
   }
 }

@@ -21,13 +21,49 @@
   display: grid;
   width: 100%;
   max-width: 500px;
-  grid-template-rows: 1fr 1fr 1fr;
-  /* color: white; */
-  /* background: darkslateblue; */
+  grid-template-rows: repeat(4, 1fr);
   color: rgba(255,255,255, .8);
   background: rgba(0,0,0, .3);
   border-radius: 10px;
   padding: 2rem;
+  transition: all .25s ease-in;
+  -webkit-transition: all .25s ease-in;
+}
+
+.card--visa {
+  background: rgb(185, 226, 248);
+  background-image:
+    linear-gradient(
+      to left, 
+      rgb(142, 186, 209), rgb(23, 51, 83)
+    );
+}
+
+.card--mastercard {
+  background: rgb(17, 29, 43);
+  background-image:
+    linear-gradient(
+      to right, 
+      rgb(17, 29, 43), rgb(39, 86, 139)
+    );
+}
+
+.card--discover {
+  background: rgb(106, 40, 56);
+  background-image:
+    linear-gradient(
+      to right, 
+      rgb(106, 40, 56), rgb(185, 72, 100)
+    );
+}
+
+.card--amex {
+  background: rgb(113, 114, 116);
+  background-image:
+    linear-gradient(
+      to right, 
+      rgb(113, 114, 116), #d2d2d2
+    );
 }
 
 .card-header h5 {
@@ -52,9 +88,10 @@
 }
 
 .card-check {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
+  position: relative;
+  text-align: left;
+  /* top: 2rem;
+  left: 2rem; */
 }
 
 .card-footer {
