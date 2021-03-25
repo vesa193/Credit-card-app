@@ -1,0 +1,82 @@
+.cards {
+  display: grid;
+  place-items: center;
+}
+
+.cards-add-page > div.MuiPaper-rounded {
+  width: 80%;
+}
+
+.card + form {
+  width: 100%;
+  display: grid;
+  row-gap: .6rem;
+  padding: 1.5rem;
+}
+
+.card + form > label {
+  color: var(--purple);
+  font-weight: bold;
+  text-align: left;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.cc-num-input.cc-num-input-currentColor .MuiInputBase-root {
+  color: currentColor;
+}
+
+.cc-num-input.cc-num-input-errorColor .MuiInputBase-root {
+  color: red;
+}
+
+.card-wrapper-footer.MuiCardActions-root {
+  justify-content: space-between;
+  background: #eee;
+  padding: 2rem 0;
+}
+
+@media (max-width: 767px) {
+  .cards-add-page > div.MuiPaper-rounded {
+    width: 100%;
+    padding: 2rem 0;
+  }
+
+  .card-wrapper-header {
+    margin-bottom: 1rem;
+  }
+
+  .card-wrapper-footer {
+    flex-direction: column;
+  }
+
+  .card-wrapper .MuiCardContent-root {
+    justify-items: center;
+  }
+
+  .card + form {
+    width: 85%;
+    row-gap: 2rem;
+  }
+
+  .card-content {
+    flex-direction: column;
+    margin: 2rem 0;
+  }
+
+  .card-content > p {
+    align-self: flex-end;
+  }
+
+  .card-content > p:first-child {
+    align-self: flex-start;
+  }
+
+}

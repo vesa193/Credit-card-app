@@ -1,0 +1,20 @@
+.credit-card-brands {
+  width: 50%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+  grid-gap: 10px;
+}
+
+.credit-card-brands img {
+  width: 2rem;
+}
+
+@media (max-width: 767px) {
+  .credit-card-brands {
+    width: 80%;
+    margin-bottom: 2rem;
+  }
+}

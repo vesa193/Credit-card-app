@@ -1,5 +1,5 @@
 
-let appConfig = {
+const appConfig = {
 	theme: {
 		nav: {
 			label: 'react-app'
@@ -35,8 +35,6 @@ let appConfig = {
 		oldLayoutConfirmationScreens: false
 	}
 }
-
-export const updateConfig = newConfig => appConfig = newConfig
 
 export const getConfig = () => appConfig
 

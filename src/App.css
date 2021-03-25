@@ -1,3 +1,7 @@
+:root {
+  --purple: rgb(58, 0, 58);
+}
+
 .App {
   text-align: center;
 }
@@ -35,4 +39,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.title-of-page {
+  padding: 3rem 0;
 }

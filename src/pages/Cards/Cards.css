@@ -1,0 +1,11 @@
+.cards-page-wrapper {
+  display: grid;
+  width: 100%;
+  grid-template-rows: auto 1fr;
+  place-items: center;
+  grid-row-gap: 1rem;
+}
+
+.cards-page > button {
+  align-self: center;
+}

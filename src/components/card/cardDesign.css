@@ -1,0 +1,92 @@
+.cards-page-wrapper {
+  display: grid;
+  width: 100%;
+  grid-template-rows: auto 1fr;
+  place-items: center;
+  grid-row-gap: 1rem;
+}
+
+.cards-page > button {
+  align-self: center;
+}
+
+.card-wrapper .MuiCardContent-root {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+  position: relative;
+  height: 230px;
+  display: grid;
+  width: 100%;
+  max-width: 500px;
+  grid-template-rows: 1fr 1fr 1fr;
+  /* color: white; */
+  /* background: darkslateblue; */
+  color: rgba(255,255,255, .8);
+  background: rgba(0,0,0, .3);
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.card-header h5 {
+  text-align: right;
+  padding-top: 1rem;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-content > p > span {
+  color: #eee;
+}
+
+.card-num-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+  grid-column-gap: 2rem;
+}
+
+.card-check {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.card-footer img[aria-hidden="false"] {
+  width: 2.5rem;
+  visibility: visible;
+  transition: visibility .3s ease-out;
+}
+
+.card-footer img[aria-hidden="true"] {
+  visibility: hidden;
+}
+
+.card-footer p {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+@media (max-width: 767px) {
+  
+  .card + form {
+    row-gap: 2rem;
+  }
+  
+  .card {
+    width: 85%;
+  }
+}
