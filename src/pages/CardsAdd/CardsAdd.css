@@ -47,7 +47,6 @@
 
   .card-content {
     flex-direction: column;
-    margin: 2rem 0;
   }
 
   .card-content > p {

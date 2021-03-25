@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { Card as ShowCard } from '../../components/card/cardDesign'
 import Layout from '../../components/layout/layout';
 import CardBrands from '../../components/cardBrands/cardBrands';
-import { formatString, checkIsCardNumber, hasNumber, stringContainsDigits, normalizeCardNumber, normalizeExpiryDate, ccExpiresFormat, checkIfNumbersInString, normalizeFullName, validateCreditCardNumber, detectWhatIsBrandCard, defineLengthOfCardNumber, lastDayOfMonth } from '../../lib/utils'
+import { formatString, checkIsCardNumber, hasNumber, stringContainsDigits, normalizeCardNumber, normalizeExpiryDate, ccExpiresFormat, checkIfNumbersInString, normalizeFullName, validateCreditCardNumber, detectWhatIsBrandCard, defineLengthOfCardNumber, lastDayOfMonth, limitOfCardNumber } from '../../lib/utils'
 import './CardsAdd.css'
 
 import partOfCard from '../../assets/images/partOfCard.png'
@@ -46,9 +46,10 @@ const CardsAdd = () => {
     expiryDate: ''
   })
 
+  const handleFocus = (inputName) => setFocus(inputName)
+
   const handleChange = (key, e) => {
     const val = e.target.value
-    console.log('event', e)
     
     if (key.includes('fullName')) {
       const regName = /^[a-z][a-z\s]*$/
@@ -65,7 +66,6 @@ const CardsAdd = () => {
     if (key === 'cardNumber') {
         const cardBrand = data?.cardBrand
         setData(detectWhatIsBrandCard(e.target.value))
-        console.log('cardBrnd', cardBrand)
         // e.target.value = normalizeCardNumber(val || '')
     }
 
@@ -78,10 +78,8 @@ const CardsAdd = () => {
     const val = e.target.value
     // const options = ''
     if (key.includes('cardNumber')) {
-      console.log('INFO ####', data?.cardBrand)
       const lsCardBrand = localStorage.getItem('cardBrand')
       const cardBrand = data?.cardBrand || lsCardBrand
-      console.log('cardBrand', cardBrand)
       if (!checkIfNumbersInString(e.nativeEvent.data)) { e.preventDefault() }
 
       if (cardBrand) {
@@ -105,10 +103,13 @@ const CardsAdd = () => {
       
 
     if (key.includes('expiryDate')) {
-      console.log('KEY', e)
       if (!checkIfNumbersInString(e.nativeEvent.data)) { e.preventDefault() }
       e.target.value = ccExpiresFormat(val || '')
       e.target.value = val.substr(0, 4)
+    }
+
+    if (key.includes('fullName')) {
+      e.target.value = val.substr(0, 25)
     }
   }
 
@@ -118,8 +119,6 @@ const CardsAdd = () => {
     }
   }
 
-  console.log('INFOOO222', focus, normalizeCardNumber(form.cardNumber))
-  console.log('DATA', data, data?.isValid)
 
   const styleCNInput = (data, val) => {
     let cssClass = ''
@@ -144,15 +143,12 @@ const CardsAdd = () => {
     const enteredMonth = isNaN(+valSplited?.[0]) ? 0 : +valSplited?.[0]
     const enteredYear = isNaN(+valSplited?.[1]) ? 0 : +valSplited?.[1]
     const lastDay = lastDayOfMonth(d.getFullYear(), enteredMonth)
-    console.log('LAST day', lastDay, enteredMonth)
-    // const isTheSameMonthAndYear = enteredMonth === currMonth && enteredYear === currYear && lastDay > currDate
     const isExpiredDate = (enteredMonth < currMonth && enteredYear < currYear) || (enteredMonth > currMonth && enteredYear < currYear) || (enteredMonth === currMonth && enteredYear < currYear) || (enteredMonth < currMonth && enteredYear === currYear) || (enteredMonth === currMonth && enteredYear === currYear && lastDay <= currDate)
 
     if (!val.length) {
       cssClass = 'currentColor'
       isValid = false
     } else if (val.length) {
-      console.log('EXP DATE', enteredMonth, currMonth, enteredYear, currYear, enteredMonth < currMonth && enteredYear < currYear )
       if (isExpiredDate) {
         cssClass = 'errorColor'
         isValid = false
@@ -166,15 +162,13 @@ const CardsAdd = () => {
       return cssClass
     }
 
-    console.log('exp date is valid', isValid)
-    
     return isValid
   }
 
+  const isValidCnLimit = limitOfCardNumber(lsCardBrand, form.cardNumber) 
   const isValidCcNum = styleCNInput(data, form.cardNumber) !== 'errorColor'
   const buttonIsDisabled = form.fullName.length > 0 && isValidCcNum && (isValidExpirayDate(form.expiryDate, 'isValid') && form.expiryDate.length > 4)
 
-  console.log('INFOO: ', isValidCcNum, buttonIsDisabled)
   return (
     <Layout className="cards-add-page">
       <h2 className="title-of-page">Cards Add</h2>
@@ -193,7 +187,7 @@ const CardsAdd = () => {
             defaultValueFullName={form.fullName}
             defaultValueCardNum={form.cardNumber}
             defaultValueExpityDate={form.expiryDate}
-            setFocus={(inputName) => setFocus(inputName)}
+            setFocus={(inputName, e) => handleFocus(inputName, e)}
             handleChange={(key, e) => handleChange(key, e)}
             handleOnBeforeInput={(key, e) => handleOnBeforeInput(key, e)}
             onPasteHandler={(key, e) => onPasteHandler(key, e)}
@@ -205,7 +199,7 @@ const CardsAdd = () => {
         </CardContent>
         <CardActions className="card-wrapper-footer">
           <CardBrands />
-          <Button disabled={!buttonIsDisabled && true} color="primary" variant="contained" size="large">Add Card</Button>
+          <Button disabled={!buttonIsDisabled && !isValidCnLimit && true} color="primary" variant="contained" size="large">Add Card</Button>
         </CardActions>
       </Card>
     </Layout>

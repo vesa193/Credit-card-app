@@ -1,19 +1,20 @@
-import React from 'react'
-import { TextField, InputLabel, FormHelperText } from '@material-ui/core';
-import './cardForm.css'
+import { FormHelperText, InputLabel, TextField } from '@material-ui/core';
+import React from 'react';
+import { placeholderLeftChars } from '../../lib/utils';
+import './cardForm.css';
 
 const CardForm = (props) => {
   const { defaultValueFullName, defaultValueCardNum, defaultValueExpiryDate, cardNumberLen, lsCardBrand, ccNumClass, setFocus, handleChange, handleOnBeforeInput, onPasteHandler, isValidExpirayDate } = props
 
   return (
     <form noValidate autoComplete="off">
-      <InputLabel>Full name</InputLabel>
+      <InputLabel>Card name</InputLabel>
       <TextField 
         type="text"
         id="full-name" 
         defaultValue={defaultValueFullName}
         placeholder="John Smith"
-        onFocus={() => setFocus('fullName')} 
+        onFocus={(e) => setFocus('fullName', e)} 
         onChange={(e) => handleChange('fullName', e)}
         onBeforeInput={(e) => handleOnBeforeInput('fullName', e)}
       />
@@ -23,9 +24,9 @@ const CardForm = (props) => {
         type="tel" 
         id="cc-num-card"
         defaultValue={defaultValueCardNum}
-        placeholder="8888 8888 8888 8888"
+        placeholder={placeholderLeftChars("8888 8888 8888 8888", defaultValueCardNum)}
         onPaste={(e) => onPasteHandler('cardNumber', e)}
-        onFocus={() => setFocus('cardNumber')} 
+        onFocus={(e) => setFocus('cardNumber', e)} 
         onChange={(e) => handleChange('cardNumber', e)}
         onBeforeInput={(e) => handleOnBeforeInput('cardNumber', e)}
       />
@@ -40,11 +41,11 @@ const CardForm = (props) => {
         placeholder="MM/YY"
         isValidExpirayDate={isValidExpirayDate}
         onPaste={(e) => onPasteHandler('expiryDate', e)}
-        onFocus={() => setFocus('expiryDate')} 
+        onFocus={(e) => setFocus('expiryDate', e)} 
         onChange={(e) => handleChange('expiryDate', e)}
         onBeforeInput={(e) => handleOnBeforeInput('expiryDate', e)}
       />
-      { isValidExpirayDate === 'errorColor' ? <FormHelperText className="error-text">Card is expired.</FormHelperText> : null }
+      { isValidExpirayDate === 'errorColor' ? <FormHelperText className="error-text">Card has expired.</FormHelperText> : null }
     </form>
   );
 }

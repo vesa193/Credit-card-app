@@ -98,7 +98,7 @@ export function validateCreditCardNumber(ccNum) {
 }
 
 export function detectWhatIsBrandCard(ccNum) {
- 
+
   const cb_visa_pattern = /^4/;
   const cb_mast_pattern = /^5[1-5]/;
   const cb_disc_pattern = /^6(011|5|4[4-9]|22(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]))/;
@@ -108,19 +108,15 @@ export function detectWhatIsBrandCard(ccNum) {
   let cardBrand = null
   if (ccNum) {
     if (cb_visa_pattern.test(ccNum)) {
-      console.log('VISA CARD')
       isValid = true
       cardBrand = 'Visa'
     } else if (cb_mast_pattern.test(ccNum)) {
-      console.log('MASTERCARD')
       isValid = true
       cardBrand = 'Mastercard'
     } else if (cb_disc_pattern.test(ccNum)) {
-      console.log('DISCOVER')
       isValid = true
       cardBrand = 'Discover'
     } else if (cb_amex_pattern.test(ccNum)) {
-      console.log('AMERICAN EXPRESS')
       isValid = true
       cardBrand = 'American Express'
     }
@@ -134,7 +130,6 @@ export function detectWhatIsBrandCard(ccNum) {
 export function defineLengthOfCardNumber(data, val) {
   const cardBrand = data
 
-  console.log('cardBrand ----', cardBrand)
 
   switch (cardBrand) {
     case 'Visa':
@@ -157,6 +152,44 @@ export function defineLengthOfCardNumber(data, val) {
 }
 
 
+export function limitOfCardNumber(data, val) {
+  const cardBrand = data
+  const usualLimit = 19
+  const specLimit = 18
+  let isValid = false
+
+  if (cardBrand.includes('Visa') || cardBrand.includes('Mastercard') || cardBrand.includes('Discover')) {
+    if (usualLimit > val?.length) {
+      isValid = false
+    } else {
+      isValid = true
+    }
+  }
+
+  if (cardBrand.includes('American Express')) {
+    if (specLimit > val?.length) {
+      isValid = false
+    } else {
+      isValid = true
+    }
+  }
+
+
+  return isValid
+}
+
 export function lastDayOfMonth(y,m) {
   return  new Date(y, m, 0).getDate();
+}
+
+export function placeholderLeftChars(placeholderVal, inputVal, cardBrand) {
+  const totaPlaceholder = placeholderVal.slice(inputVal?.length);
+  const wantedVal = `${inputVal}${totaPlaceholder}`;
+  
+  if (cardBrand === 'American Express') {
+    return wantedVal.substr(0, wantedVal.length - 1)
+  }
+  
+  
+  return wantedVal
 }

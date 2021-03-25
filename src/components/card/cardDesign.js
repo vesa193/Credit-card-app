@@ -5,6 +5,7 @@ import visa from '../../assets/images/visa.svg'
 import mastercard from '../../assets/images/mastercard.svg'
 import discover from '../../assets/images/discover.svg'
 import amex from '../../assets/images/amex.svg'
+import { placeholderLeftChars } from '../../lib/utils'
 
 export const Card = (props) => {
   const lsCardBrand = localStorage.getItem('cardBrand')
@@ -51,11 +52,11 @@ export const Card = (props) => {
         <img width="50" src={partOfCard} alt="part of card"/>
       </div>
       <div className="card-content">
-        <p>{cardNumber || '**** **** **** ****'}</p>
-        <p>{expiryDate || 'MM/YYYY'}</p>
+        <p>{placeholderLeftChars('•••• •••• •••• ••••', cardNumber, lsCardBrand)}</p>
+        <p>{placeholderLeftChars('MM/YY', expiryDate, 'null', 'expiryDate')}</p>
       </div>
       <div className="card-footer">
-        <p>{fullName || 'Full name'}</p>
+        <p>{fullName || 'Card name'}</p>
         <img aria-hidden={lsCardBrand !== 'null' ? 'false' : 'true'} src={handleImage(lsCardBrand || 'null', 'image')} alt={lsCardBrand} />
       </div>
     </div>

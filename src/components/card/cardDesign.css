@@ -17,7 +17,7 @@
 
 .card {
   position: relative;
-  height: 230px;
+  height: 260px;
   display: grid;
   width: 100%;
   max-width: 500px;
@@ -26,8 +26,8 @@
   background: rgba(0,0,0, .3);
   border-radius: 10px;
   padding: 2rem;
-  transition: all .25s ease-in;
-  -webkit-transition: all .25s ease-in;
+  transition: all .4s ease-in;
+  -webkit-transition: all .4s ease-in;
 }
 
 .card--visa {
@@ -68,13 +68,24 @@
 
 .card-header h5 {
   text-align: right;
+  text-transform: uppercase;
   padding-top: 1rem;
 }
 
-.card-content {
-  display: flex;
-  justify-content: space-between;
+.card-content, .card-footer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-row-gap: 1rem;
   align-items: center;
+  padding: 1rem 0;
+}
+
+.card-footer {
+  padding: 0;
+}
+
+.card-content p:last-child {
+  justify-self: flex-end;
 }
 
 .card-content > p > span {
@@ -94,17 +105,11 @@
   left: 2rem; */
 }
 
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left;
-}
-
 .card-footer img[aria-hidden="false"] {
   width: 2.5rem;
+  justify-self: flex-end;
   visibility: visible;
-  transition: visibility .3s ease-out;
+  transition: all .3s ease-out;
 }
 
 .card-footer img[aria-hidden="true"] {
@@ -125,5 +130,6 @@
   
   .card {
     width: 85%;
+    height: 280px;
   }
 }
