@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import uuid from 'react-uuid'
 import { FormHelperText, InputLabel, TextField } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -37,6 +38,8 @@ const useStyles = makeStyles({
 const CardsAdd = () => {
   const classes = useStyles();
   const lsCardBrand = localStorage.getItem('cardBrand')
+  const [cardItems, setCardtems] = useState([])
+  const textInput = React.useRef();
   const [data, setData] = useState(null)
   const [focus, setFocus] = useState(null)
   // const [cardNumber, setCardNumber] = useState('')
@@ -45,6 +48,21 @@ const CardsAdd = () => {
     cardNumber: '',
     expiryDate: ''
   })
+
+  useEffect(() => {
+    // cleanupState()
+  }, [cardItems])
+
+  const cleanupState = () => {
+    const formState = {
+      ...form,
+      fullName: '',
+      cardNumber: '',
+      expiryDate: ''
+    }
+
+    setForm(formState)
+  }
 
   const handleFocus = (inputName) => setFocus(inputName)
 
@@ -68,7 +86,6 @@ const CardsAdd = () => {
         setData(detectWhatIsBrandCard(e.target.value))
         // e.target.value = normalizeCardNumber(val || '')
     }
-
 
     setForm({ ...form, [key]: val })
   }
@@ -133,7 +150,7 @@ const CardsAdd = () => {
 
   const isValidExpirayDate = (val, type) => {
     let cssClass = ''
-    let isValid = null
+    let isValid = false
 
     const d = new Date()
     const currDate = d.getDate();
@@ -162,13 +179,43 @@ const CardsAdd = () => {
       return cssClass
     }
 
-    return isValid
+    if (type === 'isValid') {
+      return isValid
+    }
   }
 
+  const clearInput = () => {
+    if (textInput) {
+      textInput.current.[0].value = ''
+      textInput.current[1].value = ''
+      textInput.current[2].value = ''
+    }
+  };
+
+  const handleAddCard = () => {
+    const { fullName, cardNumber, expiryDate } = form
+    const id = uuid()
+    const dataCard = {
+      id,
+      fullName,
+      cardNumber,
+      expiryDate
+    }
+    
+    const newItems = [...cardItems, dataCard]
+    setCardtems(newItems)
+    localStorage.setItem('cardItems', JSON.stringify(newItems))
+    cleanupState()
+    clearInput()
+  }
+
+  const isValidFullName = form.fullName.length > 3
   const isValidCnLimit = limitOfCardNumber(lsCardBrand, form.cardNumber) 
   const isValidCcNum = styleCNInput(data, form.cardNumber) !== 'errorColor'
-  const buttonIsDisabled = form.fullName.length > 0 && isValidCcNum && (isValidExpirayDate(form.expiryDate, 'isValid') && form.expiryDate.length > 4)
-
+  const isValidExpDate = isValidExpirayDate(form.expiryDate, 'isValid')
+  const buttonIsDisabled = isValidFullName && isValidCcNum && isValidCnLimit && isValidExpDate
+  console.log('cardItems 4455', cardItems)
+  console.log('form', form)
   return (
     <Layout className="cards-add-page">
       <h2 className="title-of-page">Cards Add</h2>
@@ -195,11 +242,20 @@ const CardsAdd = () => {
             cardNumberLen={form.cardNumber.length}
             ccNumClass={styleCNInput(data, form.cardNumber)}
             isValidExpirayDate={isValidExpirayDate(form.expiryDate, 'class')}
+            formRef={textInput}
           />
         </CardContent>
         <CardActions className="card-wrapper-footer">
           <CardBrands />
-          <Button disabled={!buttonIsDisabled && !isValidCnLimit && true} color="primary" variant="contained" size="large">Add Card</Button>
+          <Button 
+            disabled={!!buttonIsDisabled === false && true} 
+            color="primary" 
+            variant="contained" 
+            size="large"
+            onClick={() => handleAddCard()}
+          >
+            Add Card
+          </Button>
         </CardActions>
       </Card>
     </Layout>

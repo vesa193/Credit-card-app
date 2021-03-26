@@ -22,12 +22,17 @@
   width: 100%;
   max-width: 500px;
   grid-template-rows: repeat(4, 1fr);
-  color: rgba(255,255,255, .8);
+  color: rgba(255,255,255, .9);
   background: rgba(0,0,0, .3);
   border-radius: 10px;
   padding: 2rem;
   transition: all .4s ease-in;
   -webkit-transition: all .4s ease-in;
+}
+
+.card--invalid {
+  box-shadow: 1px 1px 25px darkgray;
+  -webkit-box-shadow: 1px 1px 25px darkgray;
 }
 
 .card--visa {
@@ -37,6 +42,8 @@
       to left, 
       rgb(142, 186, 209), rgb(23, 51, 83)
     );
+  box-shadow: 1px 1px 25px rgb(185, 226, 248);
+  -webkit-box-shadow: 1px 1px 25px rgb(185, 226, 248);
 }
 
 .card--mastercard {
@@ -46,6 +53,8 @@
       to right, 
       rgb(17, 29, 43), rgb(39, 86, 139)
     );
+  box-shadow: 1px 1px 25px rgb(17, 29, 43);
+  -webkit-box-shadow: 1px 1px 25px rgb(17, 29, 43);
 }
 
 .card--discover {
@@ -55,6 +64,8 @@
       to right, 
       rgb(106, 40, 56), rgb(185, 72, 100)
     );
+  box-shadow: 1px 1px 25px rgb(106, 40, 56);
+  -webkit-box-shadow: 1px 1px 25px rgb(106, 40, 56);
 }
 
 .card--amex {

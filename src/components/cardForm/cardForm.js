@@ -1,13 +1,19 @@
 import { FormHelperText, InputLabel, TextField } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { placeholderLeftChars } from '../../lib/utils';
 import './cardForm.css';
 
 const CardForm = (props) => {
-  const { defaultValueFullName, defaultValueCardNum, defaultValueExpiryDate, cardNumberLen, lsCardBrand, ccNumClass, setFocus, handleChange, handleOnBeforeInput, onPasteHandler, isValidExpirayDate } = props
+  const { defaultValueFullName, defaultValueCardNum, defaultValueExpiryDate, cardNumberLen, lsCardBrand, ccNumClass, setFocus, handleChange, handleOnBeforeInput, onPasteHandler, isValidExpirayDate, formRef } = props
+
+  console.log('CArdForm', defaultValueFullName, defaultValueCardNum, defaultValueExpiryDate)
+  useEffect(() => {
+    console.log('RErendered form')
+  }, [defaultValueFullName])
+
 
   return (
-    <form noValidate autoComplete="off">
+    <form autoComplete="off" ref={formRef}>
       <InputLabel>Card name</InputLabel>
       <TextField 
         type="text"
@@ -24,7 +30,8 @@ const CardForm = (props) => {
         type="tel" 
         id="cc-num-card"
         defaultValue={defaultValueCardNum}
-        placeholder={placeholderLeftChars("8888 8888 8888 8888", defaultValueCardNum)}
+        // placeholder={placeholderLeftChars("8888 8888 8888 8888", defaultValueCardNum)}
+        placeholder="8888 8888 8888 8888"
         onPaste={(e) => onPasteHandler('cardNumber', e)}
         onFocus={(e) => setFocus('cardNumber', e)} 
         onChange={(e) => handleChange('cardNumber', e)}

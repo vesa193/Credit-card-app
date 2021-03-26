@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './cardDesign.css'
 
 import visa from '../../assets/images/visa.svg'
@@ -9,15 +9,11 @@ import { placeholderLeftChars } from '../../lib/utils'
 
 export const Card = (props) => {
   const lsCardBrand = localStorage.getItem('cardBrand')
-  const [cardData, setCardData] = useState({
-    cardBrandImage: 'null',
-    cardClass: ''
-  })
   const { partOfCard, cardNumber, expiryDate, fullName } = props
 
   const handleImage = (cBrand, typeData) => {
     let img = 'null'
-    let cardClass = ''
+    let cardClass = 'invalid'
     let data = null
 
     if (cBrand === 'Visa') {
@@ -32,6 +28,9 @@ export const Card = (props) => {
     } else if (cBrand === 'American Express') {
       img = amex
       cardClass = 'amex'
+    } else {
+      img = ''
+      cardClass = 'invalid'
     }
 
     if (typeData === 'image') {
@@ -44,7 +43,7 @@ export const Card = (props) => {
   }
 
   return (
-    <div className={`card card--${handleImage(lsCardBrand || 'null', 'cardClass') || 'invalid'}`}>
+    <div className={`card card--${handleImage(lsCardBrand, 'cardClass') || 'invalid'}`}>
       <div className="card-header">
         <h5>Credit Card</h5>
       </div>
