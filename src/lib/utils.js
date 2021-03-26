@@ -1,13 +1,16 @@
 const cardNumberRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/
+const cardNameRegEx = /^[\w&.-]*$/
 
 export function formatString(s) {
   return s.toString().replace(/\d{4}(?=.)/g, '$& ');
 }
 
 export function normalizeFullName(string) {
-  const re = /^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/
-  return re.test(string)
+  const reFullName = /^[a-z ,.'\s-]+$/i
+  console.log('normalizeFullName', reFullName.test(string))
+  return reFullName.test(string)
 }
+
 
 export function normalizeCardNumber(s, subStrEnd) {
   return s ? s.toString().replace(/\s/g, '').match(/.{1,4}/g)?.join(' ').substr(0, subStrEnd) : '';

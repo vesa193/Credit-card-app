@@ -9,7 +9,7 @@ import { placeholderLeftChars } from '../../lib/utils'
 
 export const Card = (props) => {
   const lsCardBrand = localStorage.getItem('cardBrand')
-  const { partOfCard, cardNumber, expiryDate, fullName } = props
+  const { partOfCard, cardNumber, expiryDate, fullName, focusedElement } = props
 
   const handleImage = (cBrand, typeData) => {
     let img = 'null'
@@ -51,11 +51,11 @@ export const Card = (props) => {
         <img width="50" src={partOfCard} alt="part of card"/>
       </div>
       <div className="card-content">
-        <p>{placeholderLeftChars('•••• •••• •••• ••••', cardNumber, lsCardBrand)}</p>
-        <p>{placeholderLeftChars('MM/YY', expiryDate, 'null', 'expiryDate')}</p>
+        <p className={`cardNumber cardNumber--${focusedElement?.includes('cardNumber') ? 'focused' : 'unfocused'}`}>{placeholderLeftChars('•••• •••• •••• ••••', cardNumber, lsCardBrand)}</p>
+        <p className={`expiryDate expiryDate--${focusedElement?.includes('expiryDate') ? 'focused' : 'unfocused'}`}>{placeholderLeftChars('MM/YY', expiryDate, 'null', 'expiryDate')}</p>
       </div>
       <div className="card-footer">
-        <p>{fullName || 'Card name'}</p>
+        <p className={`fullName fullName--${focusedElement?.includes('fullName') ? 'focused' : 'unfocused'}`}>{fullName || "Card name"}</p>
         <img aria-hidden={lsCardBrand !== 'null' ? 'false' : 'true'} src={handleImage(lsCardBrand || 'null', 'image')} alt={lsCardBrand} />
       </div>
     </div>

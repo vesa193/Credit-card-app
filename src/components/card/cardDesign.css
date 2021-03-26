@@ -22,7 +22,7 @@
   width: 100%;
   max-width: 500px;
   grid-template-rows: repeat(4, 1fr);
-  color: rgba(255,255,255, .9);
+  color: rgba(000, 000, 000, .5);
   background: rgba(0,0,0, .3);
   border-radius: 10px;
   padding: 2rem;
@@ -111,9 +111,8 @@
 
 .card-check {
   position: relative;
+  align-self: center;
   text-align: left;
-  /* top: 2rem;
-  left: 2rem; */
 }
 
 .card-footer img[aria-hidden="false"] {
@@ -131,6 +130,20 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.fullName,
+.cardNumber,
+.expiryDate {
+  transition: color .3s ease-out;
+}
+
+.fullName--focused,
+.cardNumber--focused,
+.expiryDate--focused {
+  color: #fff;
+}
+
+
 
 
 @media (max-width: 767px) {

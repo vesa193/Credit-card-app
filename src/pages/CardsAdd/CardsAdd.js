@@ -37,8 +37,10 @@ const useStyles = makeStyles({
 
 const CardsAdd = () => {
   const classes = useStyles();
-  const lsCardBrand = localStorage.getItem('cardBrand')
-  const [cardItems, setCardtems] = useState([])
+  const lsCardItems = JSON.parse(localStorage.getItem('cardItems'))
+  const cardItemsInitial = lsCardItems ? [...lsCardItems] : []
+  const lsCardBrand = localStorage.getItem('cardBrand') || 'null'
+  const [cardItems, setCardtems] = useState(cardItemsInitial)
   const textInput = React.useRef();
   const [data, setData] = useState(null)
   const [focus, setFocus] = useState(null)
@@ -46,7 +48,8 @@ const CardsAdd = () => {
   const [form, setForm] = useState({
     fullName: '',
     cardNumber: '',
-    expiryDate: ''
+    expiryDate: '',
+    cvcCode: ''
   })
 
   useEffect(() => {
@@ -65,7 +68,7 @@ const CardsAdd = () => {
   }
 
   const handleFocus = (inputName) => setFocus(inputName)
-
+  
   const handleChange = (key, e) => {
     const val = e.target.value
     
@@ -87,7 +90,7 @@ const CardsAdd = () => {
         // e.target.value = normalizeCardNumber(val || '')
     }
 
-    setForm({ ...form, [key]: val })
+    setForm({ ...form, [key]: val.trim() })
   }
 
 
@@ -126,6 +129,8 @@ const CardsAdd = () => {
     }
 
     if (key.includes('fullName')) {
+      if (!normalizeFullName(e.nativeEvent.data)) { e.preventDefault() }
+      e.target.value = normalizeFullName(val || '')
       e.target.value = val.substr(0, 25)
     }
   }
@@ -229,12 +234,15 @@ const CardsAdd = () => {
             cardNumber={normalizeCardNumber(form.cardNumber)}
             expiryDate={form.expiryDate}
             fullName={form.fullName}
+            focusedElement={focus}
           />
           <CardForm
             defaultValueFullName={form.fullName}
             defaultValueCardNum={form.cardNumber}
             defaultValueExpityDate={form.expiryDate}
+            defaultValueCvcCode={form.cvcCode}
             setFocus={(inputName, e) => handleFocus(inputName, e)}
+            setBlur={(inputName, e) => handleFocus(inputName, e)}
             handleChange={(key, e) => handleChange(key, e)}
             handleOnBeforeInput={(key, e) => handleOnBeforeInput(key, e)}
             onPasteHandler={(key, e) => onPasteHandler(key, e)}
