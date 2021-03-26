@@ -1,11 +1,11 @@
-.card + form {
+.card-holder + form {
   width: 100%;
   display: grid;
   row-gap: .6rem;
   padding: 1.5rem;
 }
 
-.card + form > label {
+.card-holder + form > label {
   color: var(--purple);
   font-weight: bold;
   text-align: left;
@@ -29,7 +29,7 @@ input[type=number] {
 }
 
 @media (max-width: 767px) {
-  .card + form {
+  .card-holder + form {
     width: 85%;
     row-gap: 2rem;
   }

@@ -57,7 +57,7 @@ const CardForm = (props) => {
         onBeforeInput={(e) => handleOnBeforeInput('expiryDate', e)}
       />
       { isValidExpirayDate === 'errorColor' ? <FormHelperText className="error-text">Card has expired.</FormHelperText> : null }
-      <InputLabel>Expiry date</InputLabel>
+      <InputLabel>CVC Number</InputLabel>
       <TextField
         className={`cvc-code-input cvc-code-input--${isValidExpirayDate}`}
         type="tel"
@@ -66,11 +66,11 @@ const CardForm = (props) => {
         defaultValue={defaultValueCvcCode}
         placeholder="CVC"
         isValidExpirayDate={isValidExpirayDate}
-        onPaste={(e) => onPasteHandler('expiryDate', e)}
-        onFocus={(e) => setFocus('expiryDate', e)}
+        onPaste={(e) => onPasteHandler('cvcCode', e)}
+        onFocus={(e) => setFocus('cvcCode', e)}
         onBlur={() => setBlur('')} 
-        onChange={(e) => handleChange('expiryDate', e)}
-        onBeforeInput={(e) => handleOnBeforeInput('expiryDate', e)}
+        onChange={(e) => handleChange('cvcCode', e)}
+        onBeforeInput={(e) => handleOnBeforeInput('cvcCode', e)}
       />
       { isValidExpirayDate === 'errorColor' ? <FormHelperText className="error-text">Card has expired.</FormHelperText> : null }
     </form>

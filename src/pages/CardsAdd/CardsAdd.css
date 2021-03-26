@@ -36,15 +36,6 @@
     flex-direction: column;
   }
 
-  .card-wrapper .MuiCardContent-root {
-    justify-items: center;
-  }
-
-  .card + form {
-    width: 85%;
-    row-gap: 2rem;
-  }
-
   .card-content {
     flex-direction: column;
   }

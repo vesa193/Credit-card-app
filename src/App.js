@@ -15,7 +15,6 @@ function App() {
     <Router basename={process.env.PUBLIC_URL}>
       <main className="App">
         <Switch>
-          {/* <Redirect from="/" to="/cards"> */}
           <Route
             exact
             path="/"

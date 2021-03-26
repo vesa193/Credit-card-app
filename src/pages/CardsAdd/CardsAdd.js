@@ -220,7 +220,7 @@ const CardsAdd = () => {
   const isValidExpDate = isValidExpirayDate(form.expiryDate, 'isValid')
   const buttonIsDisabled = isValidFullName && isValidCcNum && isValidCnLimit && isValidExpDate
   console.log('cardItems 4455', cardItems)
-  console.log('form', form)
+  console.log('form', form, focus)
   return (
     <Layout className="cards-add-page">
       <h2 className="title-of-page">Cards Add</h2>
@@ -234,6 +234,7 @@ const CardsAdd = () => {
             cardNumber={normalizeCardNumber(form.cardNumber)}
             expiryDate={form.expiryDate}
             fullName={form.fullName}
+            cvcCode={form.cvcCode}
             focusedElement={focus}
           />
           <CardForm
