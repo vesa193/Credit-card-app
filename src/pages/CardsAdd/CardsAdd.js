@@ -6,11 +6,12 @@ import { FormHelperText, InputLabel, TextField } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { Card as ShowCard } from '../../components/card/cardDesign'
 import Layout from '../../components/layout/layout';
 import CardBrands from '../../components/cardBrands/cardBrands';
-import { formatString, checkIsCardNumber, hasNumber, stringContainsDigits, normalizeCardNumber, normalizeExpiryDate, ccExpiresFormat, checkIfNumbersInString, normalizeFullName, validateCreditCardNumber, detectWhatIsBrandCard, defineLengthOfCardNumber, lastDayOfMonth, limitOfCardNumber } from '../../lib/utils'
+import { formatString, checkIsCardNumber, hasNumber, stringContainsDigits, normalizeCardNumber, normalizeExpiryDate, ccExpiresFormat, checkIfNumbersInString, normalizeFullName, validateCreditCardNumber, detectWhatIsBrandCard, defineLengthOfCardNumber, lastDayOfMonth, limitOfCardNumber, ccCvcCode } from '../../lib/utils'
 import './CardsAdd.css'
 
 import partOfCard from '../../assets/images/partOfCard.png'
@@ -37,6 +38,7 @@ const useStyles = makeStyles({
 
 const CardsAdd = () => {
   const classes = useStyles();
+  const history = useHistory()
   const lsCardItems = JSON.parse(localStorage.getItem('cardItems'))
   const cardItemsInitial = lsCardItems ? [...lsCardItems] : []
   const lsCardBrand = localStorage.getItem('cardBrand') || 'null'
@@ -49,7 +51,8 @@ const CardsAdd = () => {
     fullName: '',
     cardNumber: '',
     expiryDate: '',
-    cvcCode: ''
+    cvcCode: '',
+    cardBrand: ''
   })
 
   useEffect(() => {
@@ -61,7 +64,8 @@ const CardsAdd = () => {
       ...form,
       fullName: '',
       cardNumber: '',
-      expiryDate: ''
+      expiryDate: '',
+      cvcCode: ''
     }
 
     setForm(formState)
@@ -96,10 +100,10 @@ const CardsAdd = () => {
 
   const handleOnBeforeInput = (key, e, data) => {
     const val = e.target.value
+    const lsCardBrand = localStorage.getItem('cardBrand')
+    const cardBrand = data?.cardBrand || lsCardBrand
     // const options = ''
     if (key.includes('cardNumber')) {
-      const lsCardBrand = localStorage.getItem('cardBrand')
-      const cardBrand = data?.cardBrand || lsCardBrand
       if (!checkIfNumbersInString(e.nativeEvent.data)) { e.preventDefault() }
 
       if (cardBrand) {
@@ -133,10 +137,19 @@ const CardsAdd = () => {
       e.target.value = normalizeFullName(val || '')
       e.target.value = val.substr(0, 25)
     }
+
+    if (key.includes('cvcCode')) {
+      if (!checkIfNumbersInString(e.nativeEvent.data)) { e.preventDefault() }
+      if (cardBrand === 'American Express') {
+        e.target.value = val.substr(0, 3)
+      } else {
+        e.target.value = val.substr(0, 2)
+      }
+    }
   }
 
   const onPasteHandler = (key, e) => {
-    if (key.includes('cardNumber') || key.includes('expiryDate')) {
+    if (key.includes('cardNumber') || key.includes('expiryDate') || key.includes('cvcCode')) {
       e.preventDefault()
     }
   }
@@ -189,22 +202,43 @@ const CardsAdd = () => {
     }
   }
 
+
+  const validationCvcCode = (val, cardBrand) => {
+    let flag = false
+    if (!val.length) {
+      flag = false
+    }
+    
+    if (val.length === 4 && cardBrand.includes('American Express')) {
+      flag = true
+    }
+
+    if (val.length === 3 && !cardBrand.includes('American Express')) {
+      flag = true
+    }
+    
+    return flag
+  }
+
   const clearInput = () => {
     if (textInput) {
       textInput.current.[0].value = ''
       textInput.current[1].value = ''
       textInput.current[2].value = ''
+      textInput.current[3].value = ''
     }
   };
 
   const handleAddCard = () => {
-    const { fullName, cardNumber, expiryDate } = form
+    const { fullName, cardNumber, expiryDate, cvcCode } = form
     const id = uuid()
     const dataCard = {
       id,
       fullName,
       cardNumber,
-      expiryDate
+      expiryDate,
+      cvcCode,
+      cardBrand: lsCardBrand
     }
     
     const newItems = [...cardItems, dataCard]
@@ -212,13 +246,15 @@ const CardsAdd = () => {
     localStorage.setItem('cardItems', JSON.stringify(newItems))
     cleanupState()
     clearInput()
+    history.push('/cards')
   }
 
   const isValidFullName = form.fullName.length > 3
   const isValidCnLimit = limitOfCardNumber(lsCardBrand, form.cardNumber) 
   const isValidCcNum = styleCNInput(data, form.cardNumber) !== 'errorColor'
   const isValidExpDate = isValidExpirayDate(form.expiryDate, 'isValid')
-  const buttonIsDisabled = isValidFullName && isValidCcNum && isValidCnLimit && isValidExpDate
+  const isValidCvcCode = validationCvcCode(form.cvcCode, lsCardBrand)
+  const buttonIsDisabled = isValidFullName && isValidCcNum && isValidCnLimit && isValidExpDate && isValidCvcCode
   console.log('cardItems 4455', cardItems)
   console.log('form', form, focus)
   return (

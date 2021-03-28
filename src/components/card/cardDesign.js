@@ -68,7 +68,7 @@ export const Card = (props) => {
           <div className="card-back-cvc">
             <p>{placeholderLeftChars('CVC', cvcCode)}</p>
           </div>
-          { lsCardBrand === 'American Express' ? <p className="card-back-cvc-message">* This card must contain 4 digits</p> : null }
+          { lsCardBrand === 'American Express' ? <p className="card-back-cvc-message">* This card must contain 4 cvc digits</p> : null }
         </div>
       </div>
     </div>

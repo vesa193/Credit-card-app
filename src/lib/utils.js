@@ -1,3 +1,5 @@
+import cardBrands from "../components/cardBrands/cardBrands";
+
 const cardNumberRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/
 const cardNameRegEx = /^[\w&.-]*$/
 
@@ -34,6 +36,17 @@ export function ccExpiresFormat(string) {
   ).replace(
       /^([0-1]{1}[0-9]{1})([0-9]{1,2}).*/g, '$1/$2' // To handle 113 > 11/3
   );
+}
+
+export function ccCvcCode(string, cardBrand) {
+  const regEx = /^[0-9]{3}$/
+  const regExAmex = /^[0-9]{4}$/
+
+  if (cardBrand === 'American Express') {
+    regExAmex.test(string)
+  } else {
+    regEx.test(string)
+  }
 }
 
 export function checkIsCardNumber(val) {
@@ -195,4 +208,10 @@ export function placeholderLeftChars(placeholderVal, inputVal, cardBrand) {
   
   
   return wantedVal
+}
+
+
+export function showLastDigits(cardNum) {
+  const lastDigits = cardNum.split(' ')[3]
+  return `•••• •••• •••• ${lastDigits}`
 }

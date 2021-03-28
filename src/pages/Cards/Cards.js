@@ -8,21 +8,20 @@ import './Cards.css'
 
 import partOfCard from '../../assets/images/partOfCard.png'
 import { normalizeCardNumber } from '../../lib/utils';
+import CardItem from '../../components/cardItem/cardItem';
 
 
 const Cards = () => {
   const history = useHistory()
+  const lsCardItems = JSON.parse(localStorage.getItem('cardItems'))
 
   return (
     <Layout className="cards-page">
       <h2 className="title-of-page">Welcome to Credit Card App</h2>
       <div className="cards-page-wrapper">
-        {/* <Card
-          partOfCard={partOfCard}
-          cardNumber={normalizeCardNumber(form.cardNumber)}
-          expiryDate={form.expiryDate}
-          fullName={form.fullName}
-          /> */}
+        { lsCardItems ? 
+          <CardItem dataCard={lsCardItems} /> 
+          : <p>No cards</p> }
         <Button variant="contained" onClick={() => history.push('/cards/add')}>Add Card</Button>
       </div>
     </Layout>

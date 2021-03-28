@@ -80,6 +80,8 @@
 .card-back {
   transform: rotateY( 180deg );
   -webkit-transform: rotateY( 180deg );
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   z-index: 1;
 }
 
@@ -132,6 +134,7 @@
       to left, 
       rgb(142, 186, 209), rgb(23, 51, 83)
     );
+  color: #000;
   box-shadow: 1px 1px 9px rgb(185, 226, 248);
   -webkit-box-shadow: 1px 1px 9px rgb(185, 226, 248);
 }
@@ -144,6 +147,7 @@
       to right, 
       rgb(17, 29, 43), rgb(39, 86, 139)
     );
+  color: slategray;
   box-shadow: 1px 1px 9px rgb(17, 29, 43);
   -webkit-box-shadow: 1px 1px 9px rgb(17, 29, 43);
 }
@@ -240,8 +244,6 @@
 .expiryDate--focused {
   color: #fff;
 }
-
-
 
 
 @media (max-width: 767px) {  
