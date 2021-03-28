@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Cards from './pages/Cards/Cards';
 import CardsAdd from './pages/CardsAdd/CardsAdd';
+import CardsEdit from './pages/CardsEdit/CardsEdit';
 
 function App() {
   const isDefaultPath = true
@@ -28,7 +29,7 @@ function App() {
           />
           <Route exact path="/cards" component={Cards} />
           <Route path='/cards/add' component={CardsAdd} />
-          {/* <Route path='/about' component={About} /> */}
+          <Route path='/cards/:cardId' component={CardsEdit} />
         </Switch>
       </main>
     </Router>

@@ -13,6 +13,15 @@
   color: var(--danger);
 }
 
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+
 .italic {
   -moz-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);
   -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(30deg, 0deg);

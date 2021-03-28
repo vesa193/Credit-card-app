@@ -19,9 +19,11 @@ const Cards = () => {
     <Layout className="cards-page">
       <h2 className="title-of-page">Welcome to Credit Card App</h2>
       <div className="cards-page-wrapper">
-        { lsCardItems ? 
-          <CardItem dataCard={lsCardItems} /> 
-          : <p>No cards</p> }
+        <div className="cards-page-wrap">
+          { lsCardItems ? 
+            <CardItem dataCard={lsCardItems} /> 
+            : <p>No cards</p> }
+        </div>
         <Button variant="contained" onClick={() => history.push('/cards/add')}>Add Card</Button>
       </div>
     </Layout>
