@@ -40,24 +40,51 @@ const CardsEdit = () => {
   const classes = useStyles();
   const history = useHistory()
   const lsCardItems = JSON.parse(localStorage.getItem('cardItems'))
-  const cardItemsInitial = lsCardItems ? [...lsCardItems] : []
+  const lsCardId = localStorage.getItem('cardIdSlug')
+  const selectedCard = lsCardItems?.filter(cardItem => cardItem.id === lsCardId)
+  const cardItemsInitial = selectedCard ? [...selectedCard] : []
   const lsCardBrand = localStorage.getItem('cardBrand') || 'null'
   const [cardItems, setCardtems] = useState(cardItemsInitial)
   const textInput = React.useRef();
   const [data, setData] = useState(null)
   const [focus, setFocus] = useState(null)
+
+  const { id, fullName, expiryDate, cvcCode, cardNumber, cardBrand } = selectedCard?.[0]
+
   // const [cardNumber, setCardNumber] = useState('')
   const [form, setForm] = useState({
-    fullName: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvcCode: '',
-    cardBrand: ''
+    id,
+    fullName,
+    cardNumber,
+    expiryDate,
+    cvcCode,
+    cardBrand
   })
 
   useEffect(() => {
-    // cleanupState()
-  }, [cardItems])
+    const {
+      id,
+      fullName,
+      cardNumber,
+      expiryDate,
+      cvcCode,
+      cardBrand
+    } = form
+
+    setForm({
+      id,
+      fullName,
+      cardNumber,
+      expiryDate,
+      cvcCode,
+      cardBrand
+    })
+  }, [id, fullName, cardNumber, expiryDate, cvcCode, cardBrand])
+
+  useEffect(() => {
+    setData(detectWhatIsBrandCard(cardNumber))
+  }, [])
+
 
   const cleanupState = () => {
     const formState = {
@@ -159,7 +186,7 @@ const CardsEdit = () => {
     let cssClass = ''
     if (!val.length) {
       cssClass = 'currentColor'
-    } else if (val.length && !data.isValid) {
+    } else if (val.length && !data?.isValid) {
       cssClass = 'errorColor'
     }
     
@@ -271,6 +298,7 @@ const CardsEdit = () => {
             expiryDate={form.expiryDate}
             fullName={form.fullName}
             cvcCode={form.cvcCode}
+            cardBrand={form.cardBrand}
             focusedElement={focus}
           />
           <CardForm

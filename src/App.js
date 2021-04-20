@@ -4,6 +4,7 @@ import './App.css';
 import Cards from './pages/Cards/Cards';
 import CardsAdd from './pages/CardsAdd/CardsAdd';
 import CardsEdit from './pages/CardsEdit/CardsEdit';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const isDefaultPath = true
@@ -29,7 +30,8 @@ function App() {
           />
           <Route exact path="/cards" component={Cards} />
           <Route path='/cards/add' component={CardsAdd} />
-          <Route path='/cards/:cardId' component={CardsEdit} />
+          <Route path='/cards/:cardId/edit' component={CardsEdit} />
+          <Route path='*' component={NotFound} />
         </Switch>
       </main>
     </Router>

@@ -8,8 +8,8 @@ const ToolbarComponent = ({ history }) => {
   return (
     <AppBar position="static" color="default">
       <Toolbar variant="dense">
-      <IconButton color="inherit" aria-label="menu">
-        <ArrowBackIcon fontSize="default" onClick={ () => history.goBack() } />
+      <IconButton color="inherit" aria-label="menu" onClick={ () => history.goBack() }>
+        <ArrowBackIcon fontSize="default" />
       </IconButton>
       </Toolbar>
     </AppBar>
